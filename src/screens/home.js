@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import CustomButton from "../components/customButton";
 
-const NoteCard = ({ item }) => (
+const NoteCard = ({ item, setCurrentPage }) => (
   <View style={styles.card}>
     <Text style={styles.cardTitle}>{item.title}</Text>
     <Text>{item.desc}</Text>
@@ -19,7 +19,7 @@ const NoteCard = ({ item }) => (
         text="Ubah"
         fontSize={12}
         width={100}
-        onPress={() => {}}
+        onPress={() => {setCurrentPage("edit")}}
       />
       <CustomButton
         backgroundColor="#D82148"
@@ -35,21 +35,22 @@ const NoteCard = ({ item }) => (
 
 NoteCard.propTypes = {
   item: PropTypes.instanceOf(Object).isRequired,
+  setCurrentPage: PropTypes.func.isRequired
 };
 
-const Home = ({ noteData }) => (
+const Home = ({ noteData, setCurrentPage }) => (
   <View style={styles.container}>
     <CustomButton
       backgroundColor="#DDD"
       color="#203239"
       text="Tambahkan Note"
       width="100%"
-      onPress={() => {}}
+      onPress={() => {setCurrentPage("add")}}
     />
     <FlatList
       showsVerticalScrollIndicator={false}
       data={noteData}
-      renderItem={NoteCard}
+      renderItem={({item}) => <NoteCard item={item} setCurrentPage={setCurrentPage} />}
       keyExtractor={(item) => item.id}
     />
   </View>
@@ -57,6 +58,7 @@ const Home = ({ noteData }) => (
 
 Home.propTypes = {
   noteData: PropTypes.instanceOf(Array).isRequired,
+  setCurrentPage: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
