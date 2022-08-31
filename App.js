@@ -5,12 +5,12 @@ import Home from "./src/screens/home";
 import AddNote from "./src/screens/addNote";
 import EditNote from "./src/screens/editNote";
 
-const CurrentPageWidget = ({ currentPage, noteData, setCurrentPage }) => {
+const CurrentPageWidget = ({ currentPage, noteData, setCurrentPage, addNote }) => {
   switch (currentPage) {
     case "home":
       return <Home noteData={noteData} setCurrentPage={setCurrentPage} />;
     case "add":
-      return <AddNote />;
+      return <AddNote setCurrentPage={setCurrentPage} addNote={addNote} />;
     case "edit":
       return <EditNote />;
     default:
@@ -22,6 +22,7 @@ CurrentPageWidget.propTypes = {
   currentPage: PropTypes.string.isRequired,
   noteData: PropTypes.instanceOf(Array).isRequired,
   setCurrentPage: PropTypes.func.isRequired,
+  addNote: PropTypes.func.isRequired
 };
 
 const App = () => {
@@ -35,11 +36,25 @@ const App = () => {
     },
   ]);
 
+  const addNote = (title, desc) => {
+    const id = noteList.length > 0 ? noteList[noteList.length - 1].id + 1 : 1;
+
+    setNoteList([
+      ...noteList,
+      {
+        id,
+        title: title,
+        desc: desc,
+      },
+    ]);
+  };
+
   return (
     <CurrentPageWidget
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       noteData={noteList}
+      addNote={addNote}
     />
   );
 };
